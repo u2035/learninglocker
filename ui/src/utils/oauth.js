@@ -1,6 +1,6 @@
 import url from 'url';
 import _ from 'lodash';
-import { AUTH_JWT_GOOGLE } from 'lib/constants/routes';
+import { AUTH_JWT_GOOGLE, AUTH_JWT_SSO } from 'lib/constants/routes';
 
 const settings = 'scrollbars=no,toolbar=no,location=no,titlebar=no,directories=no,status=no,menubar=no';
 
@@ -71,6 +71,9 @@ function getEndpoint(provider) {
 
     case 'yahoo':
       return '';
+
+    case 'sso':
+      return `/api${AUTH_JWT_SSO}`;
 
     default:
       return '';

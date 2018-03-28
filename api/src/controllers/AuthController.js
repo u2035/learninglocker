@@ -197,6 +197,13 @@ const googleSuccess = (req, res) => {
     .catch(err => res.status(500).send(err));
 };
 
+const ssoSuccess = (req, res) => {
+  // create a JWT and set it in the query params (only way to return it with a redirect)
+  createUserJWT(req.user, 'sso')
+    .then(token => res.redirect(`/api${AUTH_JWT_SUCCESS}?access_token=${token}`))
+    .catch(err => res.status(500).send(err));
+};
+
 const clientInfo = (req, res) => {
   const authInfo = req.user.authInfo || {};
   const { title, lrs_id, organisation, scopes } = authInfo.client;
@@ -221,5 +228,6 @@ export default {
   jwt,
   jwtOrganisation,
   googleSuccess,
+  ssoSuccess,
   success
 };

@@ -3,6 +3,7 @@ import logger from 'lib/logger';
 import { BasicStrategy } from 'passport-http';
 import { Strategy as BearerStrategy } from 'passport-http-bearer';
 import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
+import { Strategy as SSOStrategy } from 'lib/sso';
 import Promise from 'bluebird';
 import CustomStrategy from 'passport-custom';
 import bcrypt from 'bcrypt';
@@ -13,7 +14,7 @@ import assert from 'assert';
 import Client from 'lib/models/client';
 import User from 'lib/models/user';
 import Dashboard from 'lib/models/dashboard';
-import { AUTH_JWT_GOOGLE_CALLBACK } from 'lib/constants/routes';
+import { AUTH_JWT_GOOGLE_CALLBACK, AUTH_JWT_SSO_CALLBACK } from 'lib/constants/routes';
 import { getCookieNameStartsWith, getCookieName } from 'ui/utils/auth';
 import Unauthorized from 'lib/errors/Unauthorised';
 
@@ -198,6 +199,35 @@ if (
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: `${process.env.SITE_URL}/api${AUTH_JWT_GOOGLE_CALLBACK}`
+      },
+      (accessToken, refreshToken, profile, done) => {
+        const userEmail = find(
+          profile.emails,
+          email => email.type === 'account'
+        );
+        User.findOrCreate({ email: userEmail.value }, (err, user) => {
+          assert.ifError(err);
+          user.googleId = profile.id;
+          user.imageUrl = get(profile, 'photos.0.value');
+          user.name = profile.displayName;
+          user.save((err, savedUser) => done(err, savedUser));
+        });
+      }
+    )
+  );
+}
+
+if (
+  process.env.SSO_ENABLED &&
+  process.env.SSO_CLIENT_ID &&
+  process.env.SSO_CLIENT_SECRET
+) {
+  passport.use(
+    new SSOStrategy(
+      {
+        clientID: process.env.SSO_CLIENT_ID,
+        clientSecret: process.env.SSO_CLIENT_SECRET,
+        callbackURL: `${process.env.SITE_URL}/api${AUTH_JWT_SSO_CALLBACK}`
       },
       (accessToken, refreshToken, profile, done) => {
         const userEmail = find(

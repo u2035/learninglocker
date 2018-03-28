@@ -7,6 +7,7 @@ import { jsonSuccess, serverError } from 'api/utils/responses';
 import passport from 'api/auth/passport';
 import {
   GOOGLE_AUTH_OPTIONS,
+  SSO_AUTH_OPTIONS,
   DEFAULT_PASSPORT_OPTIONS,
   RESTIFY_DEFAULTS,
   setNoCacheHeaders
@@ -67,6 +68,11 @@ router.get(routes.GOOGLE_AUTH, (req, res) => {
   jsonSuccess(res)({ enabled });
 });
 
+router.get(routes.SSO_AUTH, (req, res) => {
+  const enabled = boolean(process.env.SSO_ENABLED);
+  jsonSuccess(res)({ enabled });
+});
+
 /**
  * AUTHORIZATION
  */
@@ -102,6 +108,19 @@ if (process.env.GOOGLE_ENABLED) {
     AuthController.googleSuccess
   );
 }
+
+if (process.env.SSO_ENABLED) {
+  router.get(
+    routes.AUTH_JWT_SSO,
+    passport.authenticate('sso', SSO_AUTH_OPTIONS)
+  );
+  router.get(
+    routes.AUTH_JWT_SSO_CALLBACK,
+    passport.authenticate('sso', DEFAULT_PASSPORT_OPTIONS),
+    AuthController.ssoSuccess
+  );
+}
+
 
 router.get(
   routes.AUTH_JWT_SUCCESS,

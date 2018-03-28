@@ -25,6 +25,7 @@ const enhance = compose(
     loginRequestState: loginRequestStateSelector(state),
     loginError: loginErrorSelector(state),
     googleAuth: getAppDataSelector('googleAuth', false)(state),
+    ssoAuth: getAppDataSelector('ssoAuth', false)(state),
   }), {
     oAuthLoginStart: reduxOAuthLoginStart,
     loginStart: reduxLoginStart,
@@ -33,6 +34,7 @@ const enhance = compose(
   lifecycle({
     componentWillMount() {
       this.props.fetchAppData({ key: 'googleAuth' });
+      this.props.fetchAppData({ key: 'ssoAuth' });
     },
   })
 );
@@ -43,6 +45,7 @@ const render = ({
   loginRequestState,
   loginError,
   googleAuth,
+  ssoAuth,
 }) => {
   let emailInput;
   let passwordInput;
@@ -59,9 +62,16 @@ const render = ({
     oAuthLoginStart('google').catch(() => { });
   };
 
+  const onClickSSOAuthLogin = (e) => {
+    if (e) e.preventDefault();
+    oAuthLoginStart('sso').catch(() => { });
+  };
+
+
   const error = loginError;
   const inProgress = loginRequestState === IN_PROGRESS;
   const googleAuthEnabled = googleAuth.get('enabled', false);
+  const ssoAuthEnabled = ssoAuth.get('enabled', false);
 
   return (
     <FullPageBackground width={400}>
@@ -104,6 +114,13 @@ const render = ({
                     onClick={onClickOAuthLogin}
                     className={`btn btn-primary ${styles.last}`} >
                     <i className="icon ion-social-googleplus" /> Google
+                </button>
+                }
+                {ssoAuthEnabled &&
+                  <button
+                    onClick={onClickSSOAuthLogin}
+                    className="btn btn-primary">
+                    <i className="ion-log-in" /> SSO
                 </button>
                 }
               </div>
