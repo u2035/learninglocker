@@ -86,7 +86,7 @@ class Home extends Component {
     }
     return (
       <div key={key} style={style}>
-        <ListItem selectable ripple caption="Loading..." />
+        <ListItem selectable ripple caption="Загрузка..." />
       </div>
     );
   }
@@ -126,7 +126,7 @@ class Home extends Component {
     if (isLoading) return <Spinner />;
     return (
       <div style={{ marginTop: '5px', textAlign: 'center' }}>
-        You do not belong to any organisations matching that search.
+        Вы не состоите ни в одной из организаций.
       </div>
     );
   }
@@ -136,7 +136,7 @@ class Home extends Component {
     if (isLoading) return <Spinner />;
     return (
       <div style={{ marginTop: '5px', textAlign: 'center' }}>
-        You have not been added to any organisations.
+        Вы не состоите ни в одной из организаций.
       </div>
     );
   }
@@ -148,23 +148,23 @@ class Home extends Component {
     return (
       <FullPageBackground>
         <AuthContainer>
-          <h3>Choose your organisation</h3>
+          <h3>Выберите Вашу организацию</h3>
           <Card>
             <CardText>
-              <Helmet title=" - Choose an organisation" />
+              <Helmet title=" - Выберите организацию" />
               { isSiteAdmin && (
                 <div>
-                  <h4>Site Administration</h4>
+                  <h4>Администрирование</h4>
                   <List selectable ripple>
                     <ListItem
                       leftIcon={<i className="ion-ios-people" />}
                       onClick={this.gotoSiteAdminUsers}
-                      caption="View all users"
+                      caption="Все пользователи"
                       flat />
                     <ListItem
                       leftIcon={<i className="glyphicon glyphicon-tree-conifer" />}
                       onClick={this.gotoSiteAdminOrgs}
-                      caption="View all organisations"
+                      caption="Все организации"
                       flat />
                   </List>
                 </div>
@@ -176,7 +176,7 @@ class Home extends Component {
                 ) : (
                   <div>
                     <div>
-                      <h4>Your Organisations</h4>
+                      <h4>Ваши организации:</h4>
                       {
                         orgSearch !== '' || models.size > 5 ? (
                           <DebounceInput
@@ -201,7 +201,7 @@ class Home extends Component {
 
           <div className={styles.loginButtons}>
             <button className="btn btn-danger" onClick={this.onClickLogout}>
-              <i className="ion ion-log-out" /> Log Out
+              <i className="ion ion-log-out" /> Выйти
             </button>
           </div>
         </AuthContainer>
