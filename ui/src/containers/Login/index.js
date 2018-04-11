@@ -76,20 +76,20 @@ const render = ({
   return (
     <FullPageBackground width={400}>
       <div className={styles.loginWrapper}>
-        <Helmet title="- Login" />
-        <h3>Welcome</h3>
+        <Helmet title="- Вход" />
+        <h3>Добро пожаловать!</h3>
         <form>
           <Card>
             <CardText>
               <div className="form-group">
-                <label htmlFor="containersLoginEmail">E-Mail</label>
+                <label htmlFor="containersLoginEmail">Электронная почта</label>
                 <input
                   id="containersLoginEmail"
                   className="form-control"
                   ref={(ref) => { emailInput = ref; }} />
               </div>
               <div className="form-group">
-                <label htmlFor="containersLoginPassword">Password</label>
+                <label htmlFor="containersLoginPassword">Пароль</label>
                 <input
                   id="containersLoginPassword"
                   type="password"
@@ -107,7 +107,7 @@ const render = ({
             <div className={styles.buttons}>
               <div className={styles.loginButtons}>
                 <button type="submit" className="btn btn-primary" onClick={onClickLogin} >
-                  <i className="ion-log-in" /> Login
+                  <i className="ion-log-in" /> Войти
               </button>
                 {googleAuthEnabled &&
                   <button
@@ -120,13 +120,13 @@ const render = ({
                   <button
                     onClick={onClickSSOAuthLogin}
                     className="btn btn-primary">
-                    <i className="ion-log-in" /> SSO
+                    <i className="ion-log-in" /> 2035
                 </button>
                 }
               </div>
               <div className={styles.otherButtons}>
                 <Link className="btn btn-primary" routeName={'forgot'}>
-                  <i className="ion-key" /> Reset password
+                  <i className="ion-key" /> Сбросить пароль
               </Link>
               </div>
             </div>

@@ -41,13 +41,12 @@ const FullPageBackground = ({ version, children, width = 600 }) => (
   <div className={styles.background}>
     <div className={styles.centered}>
       <img alt="logo" src={logoImg} className={styles.logoImg} />
-      <span className={styles.headline}>making learning measurable</span>
+      <span className={styles.headline}>Делаем обучение измеримым</span>
       <div className={styles.underline} />
       <div style={{ width }}>
         { children }
       </div>
-      <p className={styles.copyright}>&copy; {new Date().getFullYear()} HT2 Labs</p>
-      { versionDisplay(version) }
+      <p className={styles.copyright}> {new Date().getFullYear()} </p>
     </div>
   </div>
 );
